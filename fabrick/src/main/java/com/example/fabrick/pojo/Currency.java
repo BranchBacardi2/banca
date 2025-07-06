@@ -1,4 +1,4 @@
-package com.example.fabrick.pojo;
+package com.example.fabrick.pojo.bonificoSerialize;
 
 public enum Currency {
     EUR

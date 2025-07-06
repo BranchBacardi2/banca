@@ -1,5 +1,6 @@
 package com.example.fabrick.pojo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Bonifico {
@@ -8,6 +9,9 @@ public class Bonifico {
    private String description;
    private Integer amount ;
    private Currency currency;
+
+   private SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DD");
+
 
     public Bonifico(Creditor creditor, Date executionDate, String description, Integer amount, Currency currency) {
         this.creditor = creditor;
