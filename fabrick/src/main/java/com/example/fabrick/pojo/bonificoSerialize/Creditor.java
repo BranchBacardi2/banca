@@ -1,11 +1,22 @@
-package com.example.fabrick.pojo;
+package com.example.fabrick.pojo.bonificoSerialize;
+
+import com.example.fabrick.pojo.bonificoSerialize.request.Account;
+import com.example.fabrick.pojo.bonificoSerialize.request.Address;
 
 public class Creditor {
     private String name;
     private Account account;
+    private Address address;
 
     public Account getAccount() {
         return account;
+    }
+
+    public Creditor() {
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public Creditor(String name, Account account) {
@@ -20,6 +31,14 @@ public class Creditor {
 
     public Creditor(String name) {
         this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getName() {
