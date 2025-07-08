@@ -6,6 +6,8 @@ public enum EndPoint {
     ACCOUNTSPOST("/api/gbs/banking/v4.0/accounts",HttpMethod.POST) ;
 
 
+
+
     public final String phat;
     public final HttpMethod method;
 

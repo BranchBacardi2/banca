@@ -1,10 +1,19 @@
-package com.example.fabrick.pojo;
+package com.example.fabrick.pojo.bonificoSerialize.request;
 
 public class Account {
    private String  accountCode;
+   private String bicCode;
 
     public String getAccountCode() {
         return accountCode;
+    }
+
+    public String getBicCode() {
+        return bicCode;
+    }
+
+    public void setBicCode(String bicCode) {
+        this.bicCode = bicCode;
     }
 
     public void setAccountCode(String accountCode) {
@@ -13,5 +22,9 @@ public class Account {
 
     public Account(String accountCode) {
         this.accountCode = accountCode;
+    }
+
+    public Account() {
+
     }
 }
