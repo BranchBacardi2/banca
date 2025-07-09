@@ -10,23 +10,6 @@ public class Transaction {
     private String currency;
     private String description;
 
-
-    /********
-     * {
-     *       "transactionId": "1331714087",
-     *       "operationId": "00000000273015",
-     *       "accountingDate": "2019-04-01",
-     *       "valueDate": "2019-04-01",
-     *       "type": {
-     *         "enumeration": "GBS_TRANSACTION_TYPE",
-     *         "value": "GBS_TRANSACTION_TYPE_0023"
-     *       },
-     *       "amount": -800,
-     *       "currency": "EUR",
-     *       "description": "BA JOHN DOE PAYMENT INVOICE 75/2017"
-     *     },
-     * ********/
-
     public Transaction() {
     }
 
