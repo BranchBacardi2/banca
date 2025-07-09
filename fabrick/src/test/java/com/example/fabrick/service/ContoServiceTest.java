@@ -2,6 +2,7 @@ package com.example.fabrick.service;
 
 import com.example.fabrick.client.Client;
 import com.example.fabrick.exeptions.WrongParamitersExeption;
+import com.example.fabrick.jpa.TransazioniRepository;
 import com.example.fabrick.pojo.ResposeClient;
 import com.example.fabrick.pojo.bonificoSerialize.request.Bonifico;
 import com.example.fabrick.pojo.bonificoSerialize.response.BonificoResponse;
@@ -16,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -25,18 +25,19 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 public class ContoServiceTest {
 
 
     @InjectMocks
-    private ContoService service;
+    ContoService service;
 
     @Mock
-    private Client clientUtil;
+    Client clientUtil;
 
     @Mock
     HttpClient client;
@@ -52,16 +53,21 @@ public class ContoServiceTest {
     @Mock
     HttpClient.Builder builderClient;
 
+    @Mock
+    TransazioniRepository repoTrans;
+
+
     private ObjectMapper mapper = new ObjectMapper();
     @BeforeEach
     public void mokHttp() throws IOException, InterruptedException, URISyntaxException {
         MockedStatic<HttpClient> utilities = Mockito.mockStatic(HttpClient.class);
-        Mockito.when(clientUtil.generateBuilderRequest(Mockito.any(), Mockito.any())).thenReturn(builderRequest);
-        Mockito.when(clientUtil.generateBuilderRequest(Mockito.any(), Mockito.any(),Mockito.any())).thenReturn(builderRequest);
+        Mockito.when(clientUtil.generateBuilderRequest(any(), any())).thenReturn(builderRequest);
+        Mockito.when(clientUtil.generateBuilderRequest(any(), any(), any())).thenReturn(builderRequest);
         Mockito.when(builderRequest.build()).thenReturn(request);
         utilities.when(HttpClient::newBuilder).thenReturn(builderClient);
         Mockito.when(builderClient.build()).thenReturn(client);
         Mockito.when(client.send(request, HttpResponse.BodyHandlers.ofString())).thenReturn(response);
+        Mockito.when(repoTrans.saveAllAndFlush(any())).thenReturn(new ArrayList<>());
     }
 
 
@@ -101,19 +107,29 @@ public class ContoServiceTest {
 
 
     @Test
+    public void TransazioniDecorator200() throws IOException, WrongParamitersExeption, URISyntaxException, InterruptedException {
+        String content = Files.readString(Paths.get("src/test/resources/callTransazioni200BodyResponse.json"));
+        Mockito.when(response.body()).thenReturn(content);
+        LocalDate startDate = LocalDate.parse("2019-04-01");
+        LocalDate endDate = LocalDate.parse("2019-05-01");
+        ResposeClient<TransactionList> result = service.decoretorCallTransazioniWhitStrocio(1L,startDate,endDate);
+        Assertions.assertEquals(2,result.getPayload().getList().size());
+    }
+
+
+    @Test
     public void doBonifico200() throws IOException, WrongParamitersExeption, URISyntaxException, InterruptedException {
         String contentRequest = Files.readString(Paths.get("src/test/resources/doBonifico200BodyRequest.json"));
         String contentResponse = Files.readString(Paths.get("src/test/resources/doBonifico200ResponseBody.json"));
         Mockito.when(response.body()).thenReturn(contentResponse);
         Bonifico bonifico = mapper.readValue(contentRequest,Bonifico.class);
-        ResposeClient<BonificoResponse> result= service.doBonifico(bonifico,1L);  //  "moneyTransferId": "452516859427",
+        ResposeClient<BonificoResponse> result= service.doBonifico(bonifico,1L);
         assertEquals("452516859427",result.getPayload().getMoneyTransferId());
-        assertTrue(true);
     }
 
 
     @Test
-    public void doBonificoMissingMandatoryFild() throws IOException, WrongParamitersExeption, URISyntaxException, InterruptedException {
+    public void doBonificoMissingMandatoryFild() throws IOException {
         String contentRequest = Files.readString(Paths.get("src/test/resources/doBonifico200BodyRequest.json"));
         Mockito.when(response.body()).thenReturn(contentRequest);
         Bonifico bonifico = mapper.readValue(contentRequest,Bonifico.class);
@@ -127,5 +143,7 @@ public class ContoServiceTest {
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
+
 
 }

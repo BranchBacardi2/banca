@@ -21,7 +21,7 @@ public class ContoController {
     public ResposeClient<TransactionList> getAllTransaction( @PathVariable Long id, @RequestParam("fromAccountingDate") String startDate,@RequestParam("toAccountingDate") String endDate) throws Exception {
         LocalDate dateStart = LocalDate.parse(startDate);
         LocalDate dateEnd = LocalDate.parse(endDate);
-        return service.callTransazioni(  id, dateStart , dateEnd);
+        return service.decoretorCallTransazioniWhitStrocio(  id, dateStart , dateEnd);
     }
 
 

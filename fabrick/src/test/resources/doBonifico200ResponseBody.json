@@ -1,5 +1,10 @@
+
 {
-  "moneyTransferId": "452516859427",
+  "status": "OK",
+  "error": [],
+  "payload": {
+
+    "moneyTransferId": "452516859427",
   "status": "EXECUTED",
   "direction": "OUTGOING",
   "creditor": {
@@ -55,5 +60,5 @@
       "currency": "EUR"
     }
   ],
-  "hasTaxRelief": true
+  "hasTaxRelief": true}
 }

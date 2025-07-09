@@ -10,7 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ControllerAdvice400 extends ResponseEntityExceptionHandler {
+public class MyControllerAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler({
             WrongParamitersExeption.class
     })
